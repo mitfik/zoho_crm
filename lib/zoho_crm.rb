@@ -27,6 +27,7 @@ module ZohoCrm
     NEW_LEADS = "https://crm.zoho.com/crm/private/xml/Leads/insertRecords?"
     UPDATE_CONTACTS = "https://crm.zoho.com/crm/private/xml/Contacts/updateRecords?"
     UPDATE_LEADS = "https://crm.zoho.com/crm/private/xml/Leads/updateRecords?"
+    SEARCH_LEADS = "https://crm.zoho.com/crm/private/xml/Leads/searchRecords?"
 
     def initialize(username, password)
       @username = username
@@ -49,6 +50,19 @@ module ZohoCrm
 
     def retrieve_leads(auth_token, from_index, to_index)
       all_leads = GET_LEADS + "authtoken=#{auth_token}&scope=crmapi&fromIndex=#{from_index}&toIndex=#{to_index}"
+      response = HTTParty.get(all_leads)
+      raise_api_exception(response)
+    end
+
+    # TODO parametrize selectColumns and remove this method
+    def retrieve_leads2(auth_token, from_index, to_index)
+      all_leads = GET_LEADS + "authtoken=#{auth_token}&scope=crmapi&selectColumns=Leads(LEADID,Email,Email 2,Campaign Status)&fromIndex=#{from_index}&newFormat=2&toIndex=#{to_index}"
+      response = HTTParty.get(all_leads)
+      raise_api_exception(response)
+    end
+
+    def search_leads(auth_token, criteria)
+      all_leads = SEARCH_LEADS + "authtoken=#{auth_token}&scope=crmapi&criteria=#{criteria}"
       response = HTTParty.get(all_leads)
       raise_api_exception(response)
     end
