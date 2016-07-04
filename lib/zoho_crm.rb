@@ -114,7 +114,7 @@ module ZohoCrm
 
     def get_fields(auth_token, module_name)
       name = module_name.capitalize
-      fields = GET_FIELDS + name + "/getFields?authtoken=#{auth_token}&scope=crmap"
+      fields = GET_FIELDS + name + "/getFields?authtoken=#{auth_token}&scope=crmapi"
       response = HTTParty.get(fields)
       raise_api_exception(response)
     end
